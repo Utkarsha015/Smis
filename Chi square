@@ -1,0 +1,199 @@
+//Program to implement chi-square test
+ //code
+#include <iostream>
+using namespace std;
+const int MAX_ROWS = 10; // Define maximum size for rows
+const int MAX_COLS = 10; // Define maximum size for columns
+// Function to calculate the Chi-Square statistic
+double calculateChiSquare(const int observed[MAX_ROWS][MAX_COLS], const double 
+expected[MAX_ROWS][MAX_COLS], int rows, int cols) {
+ double chiSquare = 0.0;
+ for (int i = 0; i < rows; ++i) {
+ for (int j = 0; j < cols; ++j) {
+ if (expected[i][j] > 0) { // Avoid division by zero
+ double difference = observed[i][j] - expected[i][j];
+ double squaredDifference = difference * difference;
+ double division = squaredDifference / expected[i][j];
+ chiSquare += division;
+ }
+ }
+ }
+ return chiSquare;
+}
+int main() {
+ int rows, cols;
+ // Get the dimensions of the table
+ cout << "Enter the number of rows: ";
+ cin >> rows;
+ cout << "Enter the number of columns: ";
+ cin >> cols;
+ // Create arrays to store observed and expected frequencies
+ int observed[MAX_ROWS][MAX_COLS];
+double expected[MAX_ROWS][MAX_COLS];
+
+ cout << "Enter the observed frequencies:\n"; // Input observed frequencies
+
+ for (int i = 0; i < rows; ++i) {
+
+ for (int j = 0; j < cols; ++j) {
+
+ cout << "Observed frequency for cell (" << (i + 1) << ", " << (j + 1) << "): ";
+
+ cin >> observed[i][j];
+
+ }
+
+ }
+
+ double rowTotals[MAX_ROWS] = {0}; // Calculate row totals, column totals, and grand total
+
+ double colTotals[MAX_COLS] = {0};
+
+ double grandTotal = 0;
+
+ for (int i = 0; i < rows; ++i) { // Calculate totals
+
+ for (int j = 0; j < cols; ++j) {
+
+ rowTotals[i] += observed[i][j];
+
+ colTotals[j] += observed[i][j];
+
+ grandTotal += observed[i][j];
+
+ }
+
+ }
+
+ for (int i = 0; i < rows; ++i) { // Calculate expected frequencies
+
+ for (int j = 0; j < cols; ++j) {
+
+ expected[i][j] = (rowTotals[i] * colTotals[j]) / grandTotal;
+
+ }
+
+ }
+
+ for (int i = 0; i < rows; ++i) { // Combine cells if expected frequency is less than 5
+
+ for (int j = 0; j < cols; ++j) {
+
+ if (expected[i][j] < 5) { // Combine with the previous cell in the row if it exists
+
+ if (j > 0) {
+
+ observed[i][j - 1] += observed[i][j];
+
+ observed[i][j] = 0;
+
+ expected[i][j - 1] += expected[i][j];
+
+expected[i][j] = 0;
+
+ }
+
+ else if (i > 0) { // Combine with the previous cell in the column if it exists
+
+ observed[i - 1][j] += observed[i][j];
+
+ observed[i][j] = 0;
+
+ expected[i - 1][j] += expected[i][j];
+
+ expected[i][j] = 0;
+
+ }
+
+ }
+
+ }
+
+ }
+
+ // Output table headers
+
+ cout << "\nCell Oij Eij Oij-Eij (Oij-Eij)^2 ((Oij-Eij)^2)/Eij" << endl;
+
+ cout << "-----------------------------------------------------------------------" << endl;
+
+ double chiSquare = 0.0; // Calculate and display the values
+
+ for (int i = 0; i < rows; ++i) {
+
+ for (int j = 0; j < cols; ++j) {
+
+ if (expected[i][j] > 0) { // Avoid division by zero
+
+ double difference = observed[i][j] - expected[i][j];
+
+ double squaredDifference = difference * difference;
+
+ double division = squaredDifference / expected[i][j];
+
+ chiSquare += division;
+
+ cout << "(" << (i + 1) << ", " << (j + 1) << ") " // Display each row
+
+ << observed[i][j] << " "
+
+ << expected[i][j] << " "
+
+ << difference << " "
+
+ << squaredDifference << " "
+
+ << division << endl;
+
+ }
+
+ }
+
+ }
+// Output the Chi-Square statistic
+
+ cout << "\nChi-Square Statistic: " << chiSquare << endl;
+
+ // Get critical value from user
+
+ double criticalValue;
+
+ cout << "Enter the critical value for the Chi-Square test: ";
+
+ cin >> criticalValue;
+
+ // Validate input
+
+ while (criticalValue < 0) {
+
+ cout << "Invalid input. Please enter a non-negative number for the critical value: ";
+
+ cin >> criticalValue;
+
+ }
+
+ cout << "Critical Value: " << criticalValue << endl;
+
+ if (chiSquare > criticalValue) {
+
+ cout << "Since Chi-Square("<< chiSquare <<") > Critical Value("<< criticalValue <<")" << endl;
+
+ cout << "Reject the null hypothesis and accept the alternative hypothesis" << endl;
+
+ cout << "The differences between observed and expected frequencies are significant." << endl;
+
+ } else {
+
+ cout << "Since Chi-Square("<< chiSquare <<") < Critical Value("<< criticalValue <<")" << endl;
+
+ cout << "Accept the null hypothesis and reject the alternative hypothesis" << endl;
+
+ cout << "The differences between observed and expected frequencies are not significant." << 
+
+endl;
+
+ }
+
+ return 0;
+
+}
