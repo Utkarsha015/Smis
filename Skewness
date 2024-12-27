@@ -1,0 +1,26 @@
+skew
+
+#include<iostream>
+#include <cmath>
+using namespace std;
+int main(){
+    //measure of skewness helps in finding direction of skew ness in data
+    //3 types= +ve,-ve,zero skewness(symmetric data)
+    //helps us understand shape n outliers in the dataset
+    float mean, median, sd, skewness;
+
+    cout << "Enter the standard deviation: ";
+    cin >> sd;
+    cout << "Enter the mean: ";
+    cin >> mean;
+    cout << "Enter the median: ";
+    cin >> median;
+
+  // Calculate Karl Pearson Skewness Coefficient
+    skewness=3*(mean-median)/sd;
+    cout << "Karl Pearson Skewness: " << skewness << endl;
+    if(skewness>0&&skewness<3){cout<<"data is positively skewed"<<endl;}
+    else if(skewness<0&&skewness>-3){cout<<"data is negatively skewed"<<endl;}
+    else{ cout<<"data is symmetric"<<endl;}
+  return 0;
+}
