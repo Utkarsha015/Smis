@@ -1,0 +1,167 @@
+Program 
+
+#include <iostream>
+
+#include <algorithm> // For std::swap
+
+
+
+using namespace std;
+
+
+
+// Sorting
+
+void bubbleSort(int arr[], int n) {
+
+    for (int i = 0; i < n - 1; i++) {
+
+        for (int j = 0; j < n - i - 1; j++) {
+
+            if (arr[j] > arr[j + 1]) {
+
+                swap(arr[j], arr[j + 1]);
+
+            }
+
+        }
+
+    }
+
+}
+
+
+
+// Mean
+
+double mean(int n, int a[]) {
+
+    int sum = 0;
+
+    for (int i = 0; i < n; i++) {
+
+        sum += a[i];
+
+    }
+
+    return static_cast<double>(sum) / n;
+
+}
+
+
+
+// Median
+
+double median(int n, int a[]) {
+
+    if (n % 2 == 0) {
+
+        return (a[n / 2 - 1] + a[n / 2]) / 2.0;
+
+    } else {
+
+        return a[n / 2];
+
+    }
+
+}
+
+
+
+// Mode
+
+int findMode(int a[], int n) {
+
+    int maxValue = 0, maxCount = 0;
+
+    for (int i = 0; i < n; ++i) {
+
+        int count = 0;
+
+        for (int j = 0; j < n; ++j) {
+
+            if (a[j] == a[i])
+
+                ++count;
+
+        }
+
+        if (count > maxCount) {
+
+            maxCount = count;
+
+            maxValue = a[i];
+
+        }
+
+    }
+
+    return maxValue;
+
+}
+
+
+
+// Main
+
+int main() {
+
+    int n, a[100];
+
+    cout << "Enter the number of elements in the array: ";
+
+    cin >> n;
+
+    for (int i = 0; i < n; i++) {
+
+        cout << "Enter " << i + 1 << " element of the array: ";
+
+        cin >> a[i];
+
+    }
+
+    bubbleSort(a, n);
+
+    int var;
+
+    do {
+
+        cout << "Choose 1 for mean, 2 for mode, 3 for median, press 0 to stop: ";
+
+        cin >> var;
+
+        switch (var) {
+
+            case 1:
+
+                cout << "The mean is: " << mean(n, a) << endl;
+
+                break;
+
+            case 2:
+
+                cout << "The mode is: " << findMode(a, n) << endl;
+
+                break;
+
+            case 3:
+
+                cout << "The median is: " << median(n, a) << endl;
+
+                break;
+
+            case 0:
+
+                break;
+
+            default:
+
+                cout << "Invalid choice!" << endl;
+
+                break;
+
+        }
+
+    } while (var != 0);
+
+}
